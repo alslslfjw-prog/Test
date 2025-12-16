@@ -1,0 +1,234 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
+
+export default function ScanDetails() {
+  const { id } = useParams();
+  const [scan, setScan] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // --- NEW: Form State for Booking ---
+  const [bookingForm, setBookingForm] = useState({ name: '', phone: '' });
+  const [loadingBooking, setLoadingBooking] = useState(false);
+
+  // Fetch Scan Data
+  useEffect(() => {
+    const fetchScan = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('scans')
+          .select('*')
+          .eq('id', id)
+          .single();
+        
+        if (error) throw error;
+        setScan(data);
+      } catch (error) {
+        console.error('Error fetching scan:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchScan();
+  }, [id]);
+
+  // Helper to split text by new lines (\n) for bullet points
+  const formatList = (text) => {
+    if (!text) return [];
+    return text.split('\n').filter(line => line.trim() !== '');
+  };
+
+  const handleBookingSubmit = async () => {
+    if (!bookingForm.name || !bookingForm.phone) {
+        alert("يرجى كتابة الاسم ورقم الهاتف لطلب الفحص");
+        return;
+    }
+
+    setLoadingBooking(true);
+    try {
+        const { error } = await supabase.from('appointments').insert([{
+            patient_name: bookingForm.name,
+            phone_number: bookingForm.phone,
+            scan_id: scan.id, // Linking to this specific scan
+            status: 'pending'
+        }]);
+
+        if (error) throw error;
+        
+        alert("تم استلام طلبك بنجاح! سيتصل بك فريق الاستقبال قريباً لتأكيد الموعد.");
+        setBookingForm({ name: '', phone: '' }); // Reset form
+
+    } catch (error) {
+        console.error("Booking Error:", error);
+        alert("حدث خطأ، حاول مرة أخرى.");
+    } finally {
+        setLoadingBooking(false);
+    }
+  };
+
+
+  if (loading) return <div className="text-center py-40 text-teal-600 font-bold">جارٍ تحميل التفاصيل...</div>;
+  if (!scan) return <div className="text-center py-40 text-red-500">لم يتم العثور على الفحص المطلوب</div>;
+
+  const benefitsList = formatList(scan.benefits);
+  const preparationList = formatList(scan.preparation);
+
+  return (
+    <div className="bg-gray-50 min-h-screen font-sans text-right" dir="rtl">
+      
+      {/* --- 1. HEADER SECTION --- */}
+      <div className="bg-gradient-to-r from-blue-900 to-teal-500 relative pb-24 pt-10">
+        <div className="container mx-auto px-6">
+            
+            {/* Breadcrumb */}
+            <div className="flex items-center gap-2 text-blue-200 text-sm mb-8">
+                <Link to="/" className="hover:text-white transition">الرئيسية</Link> 
+                <i className="fas fa-chevron-left text-xs"></i>
+                <Link to="/scans" className="hover:text-white transition">الفحوصات</Link>
+                <i className="fas fa-chevron-left text-xs"></i>
+                <span className="text-white font-bold">{scan.name}</span>
+            </div>
+
+            {/* Header Content */}
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 relative z-10">
+                
+                {/* Icon Box */}
+                <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl border-4 border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center shadow-2xl">
+                    <i className={`${scan.icon_class || 'fa-solid fa-notes-medical'} text-6xl text-white drop-shadow-md`}></i>
+                </div>
+
+                {/* Text Info */}
+                <div className="text-center md:text-right text-white pt-4 flex-1">
+                    <h1 className="text-3xl md:text-4xl font-bold mb-4">{scan.name}</h1>
+                    <p className="text-blue-100 text-lg max-w-2xl leading-relaxed opacity-90">
+                        {scan.short_description}
+                    </p>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      {/* --- 2. MAIN GRID CONTENT --- */}
+      <div className="container mx-auto px-6 py-10 -mt-10 relative z-20">
+        <div className="grid lg:grid-cols-3 gap-8">
+            
+            {/* --- RIGHT COLUMN (Booking Card - Sticky) --- */}
+            <div className="lg:col-span-1 order-2 lg:order-1">
+                <div className="bg-white rounded-3xl shadow-xl p-6 border border-gray-100 sticky top-24">
+                    <h3 className="text-xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4">
+                        حجز هذا الفحص
+                    </h3>
+                    
+                    <div className="space-y-4">
+                        <div className="bg-blue-50 p-4 rounded-xl text-blue-800 text-sm mb-2">
+                            <i className="fas fa-info-circle ml-2"></i>
+                            يرجى التأكد من قراءة تعليمات التحضير جيداً قبل الحجز.
+                        </div>
+
+                        {/* --- NEW INPUT FIELDS --- */}
+                        <div>
+                            <input 
+                                type="text" 
+                                placeholder="الاسم الكريم" 
+                                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none focus:border-teal-500 transition"
+                                value={bookingForm.name}
+                                onChange={(e) => setBookingForm({...bookingForm, name: e.target.value})}
+                            />
+                        </div>
+                        <div>
+                            <input 
+                                type="tel" 
+                                placeholder="رقم الجوال للتواصل" 
+                                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm outline-none focus:border-teal-500 transition"
+                                value={bookingForm.phone}
+                                onChange={(e) => setBookingForm({...bookingForm, phone: e.target.value})}
+                            />
+                        </div>
+
+                        <button 
+                            onClick={handleBookingSubmit}
+                            disabled={loadingBooking}
+                            className={`w-full bg-teal-500 hover:bg-teal-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-teal-500/20 transition transform active:scale-[0.98] flex items-center justify-center gap-2 ${loadingBooking ? 'opacity-70' : ''}`}
+                        >
+                            {loadingBooking ? (
+                                <span>جارٍ الإرسال...</span>
+                            ) : (
+                                <>
+                                    <i className="fas fa-check-circle"></i>
+                                    <span>تأكيد طلب الفحص</span>
+                                </>
+                            )}
+                        </button>
+                    </div>
+
+                    <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+                        <p className="text-gray-400 text-xs mb-2">
+                           متاح يومياً من 8 صباحاً حتى 10 مساءً
+                        </p>
+                        <a href="tel:777552666" className="text-teal-600 font-bold hover:underline dir-ltr block">
+                            <i className="fas fa-phone-alt mr-2"></i>
+                            777 552 666
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {/* --- LEFT COLUMN (Details) --- */}
+            <div className="lg:col-span-2 order-1 lg:order-2 space-y-6">
+                
+                {/* 1. Benefits Section */}
+                {benefitsList.length > 0 && (
+                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+                        <h2 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
+                            <i className="fas fa-star text-teal-500"></i>
+                            فوائد الفحص واستخداماته
+                        </h2>
+                        <ul className="space-y-3">
+                            {benefitsList.map((item, index) => (
+                                <li key={index} className="flex items-start gap-3">
+                                    <i className="fas fa-check-circle text-teal-500 mt-1.5 text-sm"></i>
+                                    <span className="text-gray-700 leading-loose">{item.replace(/•/g, '')}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
+                {/* 2. Preparation Section */}
+                {preparationList.length > 0 && (
+                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+                        <h2 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
+                            <i className="fas fa-clipboard-list text-orange-500"></i>
+                            التحضيرات المطلوبة
+                        </h2>
+                        <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
+                            <ul className="space-y-3">
+                                {preparationList.map((item, index) => (
+                                    <li key={index} className="flex items-start gap-3">
+                                        <i className="fas fa-exclamation-circle text-orange-500 mt-1.5 text-sm"></i>
+                                        <span className="text-gray-800 font-medium leading-loose">{item.replace(/•/g, '')}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                )}
+
+                {/* 3. General Note */}
+                <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 flex items-start gap-4">
+                     <i className="fas fa-user-md text-blue-600 text-2xl mt-1"></i>
+                     <div>
+                        <h4 className="font-bold text-blue-900 mb-1">استشارة طبية</h4>
+                        <p className="text-sm text-blue-800 opacity-80 leading-relaxed">
+                            جميع الفحوصات يتم الإشراف عليها من قبل نخبة من استشاريي الأشعة والتشخيص لضمان دقة النتائج وسلامتكم.
+                        </p>
+                     </div>
+                </div>
+
+            </div>
+        </div>
+      </div>
+
+    </div>
+  );
+}
