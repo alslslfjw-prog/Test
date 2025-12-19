@@ -119,7 +119,7 @@ export default function DoctorDetails() {
 
                     <div className="mt-6 pt-6 border-t border-gray-100 flex items-center justify-center gap-2 text-teal-600 font-bold">
                         <i className="fas fa-phone-alt"></i>
-                        <span dir="ltr">777 552 666</span>
+                        <span dir="ltr">777552666</span>
                     </div>
                 </div>
             </div>
