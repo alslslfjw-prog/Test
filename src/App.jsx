@@ -10,6 +10,8 @@ import Clinics from './pages/Clinics';
 import Examinations from './pages/Examinations';
 import About from './pages/About';
 import EquipmentDetails from './pages/EquipmentDetails';
+import ClinicDetails from './pages/ClinicDetails'; // Import the new page
+import ExaminationDetails from './pages/ExaminationDetails'; // Import the new page
 
 function App() {
   return (
@@ -34,16 +36,18 @@ function App() {
         
             {/* Clinics */}
             <Route path="/clinics" element={<Clinics />} />
-
+            {/* ✅ Add this new route */}   
+           <Route path="/clinics/:id" element={<ClinicDetails />} />
             {/* Examinations */}
             <Route path="/examinations" element={<Examinations />} />
+           {/* ✅ Add this new route */}
+           <Route path="/examinations/:id" element={<ExaminationDetails />} />
 
             {/* About */}
             <Route path="/about" element={<About />} />
 
             {/* Equipment Details */}
-            <Route path="/equipments/:id" element={<EquipmentDetails />} />
-
+              <Route path="/equipments/:id" element={<EquipmentDetails />} />
             
             
           </Routes>

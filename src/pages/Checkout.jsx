@@ -155,7 +155,7 @@ export default function Checkout() {
                   <div>
                     <p className="text-sm text-gray-500 mb-1">الموقع</p>
                     <p className="font-bold text-gray-800 text-sm">مركز المدينة الطبي</p>
-                    <p className="text-xs text-gray-400">حضرموت، المكلا</p>
+                    <p className="text-xs text-gray-400">عدن، المنصورة - بجانب مستشفى 22 مايو</p>
                   </div>
                 </div>
               </div>

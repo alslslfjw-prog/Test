@@ -90,7 +90,7 @@ export default function Clinics() {
                     </div>
                     <div className="text-center">
                         <i className="fas fa-user-md text-3xl text-blue-500 mb-2"></i>
-                        <span className="block text-2xl font-bold text-gray-800">+50</span>
+                        <span className="block text-2xl font-bold text-gray-800">+35</span>
                         <span className="text-xs text-gray-400">طبيب استشاري</span>
                     </div>
                     <div className="text-center">
@@ -118,7 +118,7 @@ export default function Clinics() {
             return (
               <div key={clinic.id} className="group">
                   {/* Upper Colored Card */}
-                  <Link to="/doctors">
+                  <Link to={`/clinics/${clinic.id}`}>
                     <div 
                         className={`rounded-t-2xl p-6 h-40 relative shadow-md transition-transform duration-300 group-hover:-translate-y-1 cursor-pointer flex flex-col justify-between ${gradientClass}`}
                     >

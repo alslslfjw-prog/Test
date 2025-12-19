@@ -92,12 +92,12 @@ const Scans = () => {
                      </div>
                      <div className="w-px h-10 bg-gray-200"></div>
                      <div className="flex-1">
-                        <span className="block text-2xl md:text-3xl font-bold text-teal-500">+120</span>
+                        <span className="block text-2xl md:text-3xl font-bold text-teal-500">+5</span>
                         <span className="text-xs text-gray-500 font-bold">طبيب متخصص</span>
                      </div>
                      <div className="w-px h-10 bg-gray-200"></div>
                      <div className="flex-1">
-                        <span className="block text-2xl md:text-3xl font-bold text-blue-900">120</span>
+                        <span className="block text-2xl md:text-3xl font-bold text-blue-900">5</span>
                         <span className="text-xs text-gray-500 font-bold">غرفة مجهزة</span>
                      </div>
                   </div>
