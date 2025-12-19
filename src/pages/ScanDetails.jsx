@@ -167,7 +167,7 @@ export default function ScanDetails() {
                         </p>
                         <a href="tel:777552666" className="text-teal-600 font-bold hover:underline dir-ltr block">
                             <i className="fas fa-phone-alt mr-2"></i>
-                            777 552 666
+                            777552666
                         </a>
                     </div>
                 </div>
