@@ -12,6 +12,17 @@ import About from './pages/About';
 import EquipmentDetails from './pages/EquipmentDetails';
 import ClinicDetails from './pages/ClinicDetails'; // Import the new page
 import ExaminationDetails from './pages/ExaminationDetails'; // Import the new page
+import Test from './pages/Test';
+import SceneTwo from './pages/Scene 2.jsx';
+import SceneThreeConference from './pages/SceneThreeConference.jsx';
+import SceneFourThemes from './pages/SceneFourThemes.jsx';
+import SceneFiveCallForPapers from './pages/SceneFiveCallForPapers.jsx';
+import SceneSixDate from './pages/SceneSixDate.jsx';
+import SceneSevenDeadline from './pages/SceneSevenDeadline.jsx';
+import SceneEightContact from './pages/SceneEightContact.jsx';
+import SceneNineFinal from './pages/SceneNineFinal.jsx';
+import IslamicBackground from './pages/IslamicBackground.jsx';
+import VideoController from './pages/VideoController.jsx';
 
 function App() {
   return (
@@ -49,7 +60,38 @@ function App() {
             {/* Equipment Details */}
               <Route path="/equipments/:id" element={<EquipmentDetails />} />
             
-            
+            {/* Test Animation Page */}
+            <Route path="/test" element={<Test />} />
+
+            {/* Scene 2 Page */}
+            <Route path="/scene-2" element={<SceneTwo />} />
+
+            {/* Scene Three Conference Page */}
+            <Route path="/SceneThreeConference" element={<SceneThreeConference />} />
+
+            {/* Scene Four Themes Page */}
+            <Route path="/SceneFourThemes" element={<SceneFourThemes />} />
+
+            {/* Scene Five Call For Papers Page */}
+            <Route path="/SceneFiveCallForPapers" element={<SceneFiveCallForPapers />} />
+
+            {/* Scene Six Date Page */}
+            <Route path="/SceneSixDate" element={<SceneSixDate />} />
+
+            {/* Scene Seven Deadline Page */}
+            <Route path="/SceneSevenDeadline" element={<SceneSevenDeadline />} />
+
+            {/* Scene Eight Contact Page */}
+            <Route path="/SceneEightContact" element={<SceneEightContact />} />
+
+            {/* Scene Nine Final Page */}
+            <Route path="/SceneNineFinal" element={<SceneNineFinal />} />
+
+            {/* Islamic Background Page */}
+            <Route path="/IslamicBackground" element={<IslamicBackground />} />
+
+
+
           </Routes>
         </main>
         

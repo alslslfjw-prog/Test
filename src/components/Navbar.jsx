@@ -13,13 +13,25 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   const navLinks = [
-    { name: 'الرئيسية', path: '/' },
-    { name: 'عن المركز', path: '/about' },
-    { name: 'الأطباء', path: '/doctors' },
-    { name: 'الأشعة التشخيصية', path: '/scans' },
-    { name: 'العيادات', path: '/clinics' },
-    { name: 'الفحوصات', path: '/examinations' },
-  ];
+  //  { name: 'الرئيسية', path: '/' },
+  //  { name: 'عن المركز', path: '/about' },
+   // { name: 'الأطباء', path: '/doctors' },
+   // { name: 'الأشعة التشخيصية', path: '/scans' },
+  //  { name: 'العيادات', path: '/clinics' },
+  //  { name: 'الفحوصات', path: '/examinations' },
+    { name: 'اختبار', path: '/test' },
+    { name: 'المشهد 2', path: '/scene-2'},
+    { name: 'المشهد 3', path: '/SceneThreeConference' },
+    { name: 'المشهد 4', path: '/SceneFourThemes' },
+    { name: 'المشهد 5', path: '/SceneFiveCallForPapers' },
+    { name: 'المشهد 6', path: '/SceneSixDate' },
+    { name: 'المشهد 7', path: '/SceneSevenDeadline' },
+    { name: 'المشهد 8', path: '/SceneEightContact' },
+    { name: 'المشهد 9', path: '/SceneNineFinal' },
+    { name: 'الخلفية الإسلامية', path: '/IslamicBackground' },
+    { name: 'متحكم الفيديو', path: '/VideoController' },
+    
+    ];
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50 font-sans" dir="rtl">
