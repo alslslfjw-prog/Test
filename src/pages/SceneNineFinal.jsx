@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 const SceneNineFinal = () => {
@@ -8,39 +8,65 @@ const SceneNineFinal = () => {
     setKey((prev) => prev + 1);
   };
 
-  // --- شعار الـ 30 عاماً (SVG مخصص) ---
-  const AnniversaryLogo = () => (
-    <svg viewBox="0 0 200 200" className="w-40 h-40 md:w-56 md:h-56 drop-shadow-2xl">
+  // --- شعار الـ 30 عاماً المحدث (Simplified Gold Heart Design) ---
+  const ProfessionalEmblem = () => (
+    <svg viewBox="0 0 300 300" className="w-64 h-64 md:w-80 md:h-80 drop-shadow-xl">
       <defs>
-        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        {/* تدرج ذهبي بسيط وأنيق */}
+        <linearGradient id="simpleGold" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#FCD34D" />
           <stop offset="50%" stopColor="#D4AF37" />
           <stop offset="100%" stopColor="#B45309" />
         </linearGradient>
+        {/* فلتر ظل خفيف */}
+        <filter id="softShadow"><feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.2" /></filter>
       </defs>
-      
-      {/* أكاليل الغار (Laurel Wreath) */}
-      <path d="M100 180 Q40 160 20 100 Q10 60 40 40" fill="none" stroke="url(#goldGrad)" strokeWidth="4" strokeLinecap="round" />
-      <path d="M100 180 Q160 160 180 100 Q190 60 160 40" fill="none" stroke="url(#goldGrad)" strokeWidth="4" strokeLinecap="round" />
-      
-      {/* الرقم 30 */}
-      <text x="100" y="115" textAnchor="middle" fontSize="80" fontWeight="bold" fill="url(#goldGrad)" fontFamily="serif">30</text>
-      
-      {/* النصوص */}
-      <text x="100" y="140" textAnchor="middle" fontSize="14" fill="#065f46" fontWeight="bold">عاماً من</text>
-      <text x="100" y="158" textAnchor="middle" fontSize="14" fill="#065f46" fontWeight="bold">العلم والعطاء</text>
 
-      {/* نجوم زخرفية */}
-      <motion.circle cx="100" cy="30" r="4" fill="#D4AF37" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} />
-      <circle cx="50" cy="50" r="2" fill="#D4AF37" />
-      <circle cx="150" cy="50" r="2" fill="#D4AF37" />
+      {/* 1. الإطار القلبي الذهبي (Golden Heart Shape Outline) */}
+      {/* رسم خطين منحنيين يشكلان قلباً مفتوحاً من الأعلى قليلاً */}
+      <g fill="none" stroke="url(#simpleGold)" strokeWidth="3" strokeLinecap="round">
+          {/* الجانب الأيسر */}
+          <path d="M 150 260 C 100 220, 40 160, 40 110 C 40 60, 80 40, 110 40" />
+          {/* الجانب الأيمن */}
+          <path d="M 150 260 C 200 220, 260 160, 260 110 C 260 60, 220 40, 190 40" />
+          
+          {/* نقاط زخرفية في نهايات القلب العلوية */}
+          <circle cx="110" cy="40" r="3" fill="#D4AF37" stroke="none" />
+          <circle cx="190" cy="40" r="3" fill="#D4AF37" stroke="none" />
+          
+          {/* نقطة علوية مركزية */}
+          <circle cx="150" cy="30" r="4" fill="#D4AF37" stroke="none" opacity="0.8" />
+      </g>
+
+      {/* 2. النصوص الداخلية */}
+      <g transform="translate(150, 130)" filter="url(#softShadow)">
+          
+          {/* النص العلوي (تم نقله من الأسفل) */}
+          <text x="0" y="-40" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#065f46" fontFamily="sans-serif">
+              عاماً من العلم والعطاء
+          </text>
+
+          {/* الرقم 30 الكبير */}
+          <text x="0" y="30" textAnchor="middle" fontSize="100" fontWeight="bold" fill="url(#simpleGold)" fontFamily="serif">
+              30
+          </text>
+      </g>
+
+      {/* 3. بريق/نجوم متحركة بسيطة (Sparkles) */}
+      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 1 }}>
+         <motion.path d="M 100 80 L 105 80 M 102.5 77.5 L 102.5 82.5" stroke="#FCD34D" strokeWidth="2" 
+            animate={{ scale: [0, 1, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 0 }} />
+         <motion.path d="M 200 80 L 205 80 M 202.5 77.5 L 202.5 82.5" stroke="#FCD34D" strokeWidth="2" 
+            animate={{ scale: [0, 1, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }} />
+      </motion.g>
+
     </svg>
   );
 
   return (
     <div className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden font-serif bg-gray-50" dir="rtl">
       
-      {/* زر إعادة التشغيل (سيختفي عند التلاشي النهائي) */}
+      {/* زر إعادة التشغيل */}
       <div className="absolute top-5 left-5 z-50">
           <button 
             onClick={handleReplay}
@@ -53,80 +79,71 @@ const SceneNineFinal = () => {
       {/* خلفية */}
       <div className="absolute inset-0 z-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#004D40 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 
-      <div key={key} className="relative z-10 w-full h-full flex flex-col items-center justify-center gap-6">
+      <div key={key} className="relative z-10 w-full h-full flex flex-col items-center justify-center gap-2">
 
-        {/* 1. شعار الذكرى 30 (يظهر أولاً ببطء) */}
+        {/* 1. الشعار الاحترافي الجديد (Simplified) */}
         <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="mb-4"
+            initial={{ scale: 0.8, opacity: 0, y: 30 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="relative z-20"
         >
-            <AnniversaryLogo />
+            <ProfessionalEmblem />
         </motion.div>
 
-        {/* 2. النص الرئيسي */}
+        {/* 2. العنوان النصي الكبير (ثلاثون عاماً...) */}
         <motion.h1
-            className="text-2xl md:text-4xl font-extrabold text-emerald-900 tracking-wide text-center"
+            className="text-3xl md:text-5xl font-extrabold text-emerald-900 tracking-wide text-center mt-[-20px] mb-8"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 1.0, duration: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
         >
             ثلاثون عاماً من العلم والعطاء
         </motion.h1>
         
+        {/* فاصل ذهبي */}
         <motion.div 
-            className="w-48 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent"
+            className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mb-8"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
         />
 
-        {/* 3. شريط الشعارات (Logos Strip) */}
+        {/* 3. شريط الشعارات (Logos) */}
         <motion.div 
-            className="flex items-center justify-center gap-8 md:gap-16 mt-8"
+            className="flex items-center justify-center gap-10 md:gap-20 relative z-10"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 2.0, duration: 0.8 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
         >
-            {/* شعار جامعة الأحقاف (يمين) */}
-            <div className="flex flex-col items-center gap-2">
-                <div className="w-20 h-20 md:w-24 md:h-24 bg-white p-2 rounded-full shadow-lg border border-gray-100 flex items-center justify-center">
-                    {/* استبدل النص بالصورة إذا توفرت: <img src="/ahgaff-logo.png" ... /> */}
-                    <span className="text-emerald-900 font-bold text-xs text-center">جامعة<br/>الأحقاف</span>
-                </div>
+            {/* جامعة الأحقاف */}
+            <div className="w-24 h-24 bg-white rounded-full shadow-lg flex items-center justify-center p-2 border border-gray-100">
+                <span className="text-emerald-900 font-bold text-xs text-center">جامعة<br/>الأحقاف</span>
             </div>
 
-            {/* شعار المؤتمر (الوسط - أكبر قليلاً) */}
-            <div className="flex flex-col items-center gap-2 relative -top-4">
-                <div className="w-24 h-24 md:w-32 md:h-32 bg-white p-2 rounded-full shadow-2xl border-2 border-amber-400 flex items-center justify-center relative z-10">
-                     <img 
-                        src="/Untitled-1.png" 
-                        onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }}
-                        alt="Conference Logo" 
-                        className="w-full h-full object-contain"
-                    />
-                    <span className="hidden text-amber-600 font-bold text-xs text-center">شعار<br/>المؤتمر</span>
-                </div>
-                <div className="w-full h-4 bg-black/10 blur-xl rounded-full absolute -bottom-2"></div>
+            {/* شعار المؤتمر (الوسط) */}
+            <div className="w-32 h-32 bg-white rounded-full shadow-2xl flex items-center justify-center p-2 border-2 border-amber-400 relative -top-6">
+                 <img 
+                    src="/Untitled-1.png" 
+                    onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }}
+                    alt="Conference Logo" 
+                    className="w-full h-full object-contain"
+                />
+                <span className="hidden text-amber-600 font-bold text-xs text-center">شعار<br/>المؤتمر</span>
             </div>
 
-            {/* شعار معهد إسراء (يسار) */}
-            <div className="flex flex-col items-center gap-2">
-                <div className="w-20 h-20 md:w-24 md:h-24 bg-white p-2 rounded-full shadow-lg border border-gray-100 flex items-center justify-center">
-                    {/* استبدل النص بالصورة إذا توفرت */}
-                    <span className="text-emerald-900 font-bold text-xs text-center">معهد<br/>إسراء</span>
-                </div>
+            {/* معهد إسراء */}
+            <div className="w-24 h-24 bg-white rounded-full shadow-lg flex items-center justify-center p-2 border border-gray-100">
+                <span className="text-emerald-900 font-bold text-xs text-center">معهد<br/>إسراء</span>
             </div>
         </motion.div>
 
-        {/* 4. التلاشي النهائي (Fade Out to Black) */}
-        {/* يبدأ بعد 5 ثواني من بداية المشهد */}
+        {/* 4. التلاشي النهائي */}
         <motion.div 
             className="absolute inset-0 bg-black z-50 pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 5.5, duration: 1.5, ease: "easeInOut" }}
+            transition={{ delay: 6.0, duration: 2.0, ease: "easeInOut" }}
         />
 
       </div>
